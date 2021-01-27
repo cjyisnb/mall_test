@@ -1,13 +1,16 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners="banners"/>
-    <recommend-view :recommends="recommends"/>
-    <feature-view/>
-    <tab-control class="tab-control"
-                 :titles="['流行','新款','精选']"
-                  @tabClick="tabClick"/>
-    <goods-list :goods="showGoods"/>
+    <scroll class="content" ref="scroll">
+      <home-swiper :banners="banners"/>
+      <recommend-view :recommends="recommends"/>
+      <feature-view/>
+      <tab-control class="tab-control"
+                   :titles="['流行', '新款', '精选']"
+                   @tabClick="tabClick"/>
+      <goods-list :goods="showGoods"/>
+    </scroll>
+    <back-top @click.native="backClick"/>
   </div>
 </template>
 
@@ -19,12 +22,18 @@
   import HomeSwiper from "@/views/home/childComps/HomeSwiper";
   import RecommendView from "@/views/home/childComps/RecommendView";
   import FeatureView from "@/views/home/childComps/FeatureView";
+  import Scroll from "@/components/common/scroll/Scroll";
+  import BackTop from "@/components/content/backTop/BackTop";
 
   import {getHomeMultidata, getHomeGoods} from "@/network/home";
+
+
 
   export default {
     name: "Home",
     components: {
+      BackTop,
+      Scroll,
       TabControl,
       FeatureView,
       NavBar,
@@ -70,6 +79,9 @@
             this.currentType = 'sell'
         }
       },
+      backClick() {
+        this.$refs.scroll.scrollTo(0, 0)
+      },
 
       /* 网络请求相关代码 */
       getHomeMultidata() {
@@ -91,13 +103,29 @@
 </script>
 
 <style scoped>
+  #home {
+    padding-top: 44px;
+    height: 100vh;
+  }
+
   .home-nav {
     background-color: var(--color-tint)
+
   }
 
   .tab-control {
     position: sticky;
     top: 44px;
     background-color: #eeeeee;
+  }
+
+  .content {
+    overflow: hidden;
+
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
   }
 </style>
