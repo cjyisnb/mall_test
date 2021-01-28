@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-    <router-view/>
-    <main-tab-bar/>
+    <keep-alive exclude="Detail">
+      <router-view/>
+      <main-tab-bar/>
+    </keep-alive>
+
   </div>
 </template>
 
